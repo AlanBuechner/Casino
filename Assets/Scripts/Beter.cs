@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Beter : MonoBehaviour
@@ -13,6 +14,9 @@ public class Beter : MonoBehaviour
 
 	[SerializeField]
 	private Text m_ChipsDisplay;
+
+	[SerializeField]
+	private UnityEvent m_BetClickEvent;
 
 	private int m_BetAmount = 0;
 
@@ -34,19 +38,10 @@ public class Beter : MonoBehaviour
 
 	public void OnChipClick(Chip chip)
 	{
-		int amount = chip.m_Amount;
-		if (Player.Get().m_Chips - amount >= 0)
-		{
-		Debug.Log(amount);
-			m_BetAmount += amount;
-			Player.Get().m_Chips -= amount;
-
-			m_ChipsDisplay.text = string.Format("{0:n0}", Player.Get().m_Chips);
-
-			Vector3 newSelectorPos = m_SelectArrow.transform.position;
-			newSelectorPos.x = chip.transform.position.x;
-			m_SelectArrow.transform.position = newSelectorPos;
-		}
+		m_BetClickEvent.Invoke();
+		Vector3 newSelectorPos = m_SelectArrow.transform.position;
+		newSelectorPos.x = chip.transform.position.x;
+		m_SelectArrow.transform.position = newSelectorPos;
 	}
 
 }

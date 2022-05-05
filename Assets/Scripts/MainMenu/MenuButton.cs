@@ -9,14 +9,14 @@ public class MenuButton : Button
 	public override void OnPointerDown(PointerEventData eventData)
 	{
 		base.OnPointerDown(eventData);
-		image.sprite = GameManager.Get().m_DownImage;
+		image.sprite = AssetManager.Get().m_DownImage;
 	}
 
 	// Button is released
 	public override void OnPointerUp(PointerEventData eventData)
 	{
 		base.OnPointerUp(eventData);
-		image.sprite = GameManager.Get().m_UpImage;
+		image.sprite = AssetManager.Get().m_UpImage;
 	}
 
 	public override void OnSubmit(BaseEventData eventData)

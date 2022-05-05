@@ -22,9 +22,6 @@ public class GameManager : MonoBehaviour
 	public static string BlackJackScene { get { return Get().m_BlackJackSceneName; } }
 	public static string SlotsScene { get { return Get().m_SlotsSceneName; } }
 
-	public Sprite m_UpImage;
-	public Sprite m_DownImage;
-
 	private void Awake()
 	{
 		if(s_Instance != null){

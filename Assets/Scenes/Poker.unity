@@ -593,6 +593,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SelectArrow: {fileID: 1089649945}
   m_ChipsDisplay: {fileID: 32031665}
+  m_BetClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &424352807
 GameObject:
   m_ObjectHideFlags: 0
