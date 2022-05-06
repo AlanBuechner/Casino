@@ -95,10 +95,7 @@ public class Poker : MonoBehaviour
 				m_Cards[i].SetIndex(m_Deck[card]);
 				m_Deck.RemoveAt(card);
 				m_Replace[i] = false;
-				Image cardImage = m_Cards[i].GetComponent<Image>();
-				Color color = cardImage.color;
-				color.a = m_Replace[i] ? 0.5f : 1.0f;
-				cardImage.color = color;
+				UpdateCardUI(i);
 			}
 		}
 
@@ -128,11 +125,19 @@ public class Poker : MonoBehaviour
 		if (m_Playing)
 		{
 			m_Replace[index] = !m_Replace[index];
-			Image cardImage = m_Cards[index].GetComponent<Image>();
-			Color color = cardImage.color;
-			color.a = m_Replace[index] ? 0.5f : 1.0f;
-			cardImage.color = color;
+			UpdateCardUI(index);
 		}
+	}
+
+	void UpdateCardUI(int index)
+	{
+		Image cardImage = m_Cards[index].GetComponent<Image>();
+		Color color = cardImage.color;
+		color.a = m_Replace[index] ? 0.5f : 1.0f;
+		cardImage.color = color;
+		Vector3 pos = m_Cards[index].transform.localPosition;
+		pos.y = m_Replace[index] ? 100 : 0;
+		m_Cards[index].transform.localPosition = pos;
 	}
 
 	private int RoyalFlush()
