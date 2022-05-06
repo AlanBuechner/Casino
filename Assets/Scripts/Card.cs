@@ -14,8 +14,11 @@ public class Card : MonoBehaviour
 		Joker = 4
 	}
 
+	[SerializeField]
 	private Suit m_Suit = Suit.Clubs;
+	[SerializeField]
 	private int m_Card = 0;
+	[SerializeField]
 	private bool m_Back = false;
 
 	public Suit GetSuit() { return m_Suit; }
@@ -35,7 +38,7 @@ public class Card : MonoBehaviour
 
 	public void SetCard(int card)
 	{
-		if (card <= 1 && card >= 13)
+		if (card >= 1 && card <= 13)
 		{
 			m_Card = card - 1;
 			UpdateSprite();
@@ -48,6 +51,25 @@ public class Card : MonoBehaviour
 		UpdateSprite();
 	}
 
+	public int GetIndex()
+	{
+		if (m_Suit == Suit.Joker)
+			return 52;
+		return ((int)m_Suit * 13) + m_Card;
+	}
+
+	public void SetIndex(int index)
+	{
+		if(index == 52)
+			m_Suit = Suit.Joker;
+		else
+		{
+			m_Suit = (Suit)(index/13);
+			m_Card = index % 13;
+		}
+		UpdateSprite();
+	}
+
 	void UpdateSprite()
 	{
 		if(m_Back)
@@ -55,7 +77,7 @@ public class Card : MonoBehaviour
 		else if (m_Suit == Suit.Joker)
 			GetComponent<Image>().sprite = AssetManager.Get().m_JokerCard;
 		else
-			GetComponent<Image>().sprite = AssetManager.Get().m_Cards[((int)m_Suit * 13) + m_Card];
+			GetComponent<Image>().sprite = AssetManager.Get().m_Cards[GetIndex()];
 	}
 	
 }
