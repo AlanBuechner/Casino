@@ -32,4 +32,5 @@ public class AssetManager : MonoBehaviour
 	public Sprite m_CardBack;
 	public Sprite m_JokerCard;
 	public Sprite[] m_Cards;
+	public Sprite[] SlotSprites;
 }

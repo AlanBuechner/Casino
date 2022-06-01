@@ -72,15 +72,14 @@ public class Poker : MonoBehaviour
 		}
 
 		m_Deck.Clear();
-		m_Deck = new List<int>{ 9+13,10,11,12,0 };
-		//for (int i = 0; i < 52; i++)
-		//	m_Deck.Add(i);
+		for (int i = 0; i < 52; i++)
+			m_Deck.Add(i);
 
 		for (int i = 0; i < m_Cards.Length; i++)
 		{
-			//int card = Random.Range(0, m_Deck.Count);
-			m_Cards[i].SetIndex(m_Deck[i]);
-			//m_Deck.RemoveAt(card);
+			int card = Random.Range(0, m_Deck.Count);
+			m_Cards[i].SetIndex(m_Deck[card]);
+			m_Deck.RemoveAt(card);
 		}
 
 		m_PlayBtn.GetComponentInChildren<Text>().text = "Draw";
@@ -96,10 +95,7 @@ public class Poker : MonoBehaviour
 				m_Cards[i].SetIndex(m_Deck[card]);
 				m_Deck.RemoveAt(card);
 				m_Replace[i] = false;
-				Image cardImage = m_Cards[i].GetComponent<Image>();
-				Color color = cardImage.color;
-				color.a = m_Replace[i] ? 0.5f : 1.0f;
-				cardImage.color = color;
+				UpdateCardUI(i);
 			}
 		}
 
@@ -129,21 +125,39 @@ public class Poker : MonoBehaviour
 		if (m_Playing)
 		{
 			m_Replace[index] = !m_Replace[index];
-			Image cardImage = m_Cards[index].GetComponent<Image>();
-			Color color = cardImage.color;
-			color.a = m_Replace[index] ? 0.5f : 1.0f;
-			cardImage.color = color;
+			UpdateCardUI(index);
 		}
+	}
+
+	void UpdateCardUI(int index)
+	{
+		Image cardImage = m_Cards[index].GetComponent<Image>();
+		Color color = cardImage.color;
+		color.a = m_Replace[index] ? 0.5f : 1.0f;
+		cardImage.color = color;
+		Vector3 pos = m_Cards[index].transform.localPosition;
+		pos.y = m_Replace[index] ? 100 : 0;
+		m_Cards[index].transform.localPosition = pos;
 	}
 
 	private int RoyalFlush()
 	{
+		if (m_Cards[0].GetCard() == 10 && StraightFlush() != -1)
+			return 100000;
 		return -1;
 	}
 
 	private int StraightFlush()
 	{
-		return -1;
+		int currCardCheck = m_Cards[0].GetCard();
+		Card.Suit suit = m_Cards[0].GetSuit();
+		for (int i = 1; i < m_Cards.Length; i++)
+		{
+			currCardCheck++;
+			if ((m_Cards[i].GetSuit() != suit || m_Cards[i].GetCard() != currCardCheck) && !(i == m_Cards.Length - 1 && m_Cards[i].GetCard() == currCardCheck % 13))
+				return -1;
+		}
+		return 10000;
 	}
 
 	private int FourOfAKind()
